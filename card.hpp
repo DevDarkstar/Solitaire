@@ -12,8 +12,8 @@ class Card
         Card();
         Card(int id, std::string colour);
         ~Card();
-        std::string getName();
-        int getId();
+        std::string getName() const;
+        int getId() const;
         void setId(int id);
 };
 

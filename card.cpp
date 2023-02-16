@@ -1,25 +1,26 @@
 #include "card.hpp"
 
-Card::Card()
+Card::Card(): m_id(0), m_name("")
 {
-    this->m_id = 0;
-    this->m_name = "";
+
 }
 
-Card::Card(int id, std::string name)
+Card::Card(int id, std::string name): m_id(id), m_name(name)
 {
-    this->m_id = id;
-    this->m_name = name;
+
 }
 
-Card::~Card(){}
+Card::~Card()
+{
 
-std::string Card::getName()
+}
+
+std::string Card::getName() const
 {
     return m_name;
 }
 
-int Card::getId()
+int Card::getId() const
 {
     return m_id;
 }

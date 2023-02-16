@@ -1,9 +1,7 @@
 #include "deck.hpp"
 
-Deck::Deck()
+Deck::Deck(): m_cardsDeck(new std::list<Card>())
 {
-    this->m_cardsDeck = nullptr;
-    this->m_cardsDeck = new std::list<Card>();
     this->generateDeck();
 }
 
@@ -23,7 +21,7 @@ void Deck::generateDeck()
     //T -> Trèfle; C -> Carreau; H -> Coeur; P -> Pique
     std::string colors[] = {"T", "C", "H", "P"};
     //On crée les cartes à insérer dans le paquet de cartes
-    //On crée un compteur qui correspond aux ids des cartes
+    //On crée un compteur qui correspond aux numéros des cartes suivant l'ordre du Bridge
     int id = 1;
     for(int i = 0; i < sizeof(colors)/sizeof(std::string); i++)
     {
@@ -53,11 +51,11 @@ void Deck::resetDeck()
 
 void Deck::shuffleDeck()
 {
-    //Création d'un tableau contenant les indices des cartes du paquet
+    //Création d'un tableau contenant les numéros des cartes du paquet
     std::array<int,54> idCards {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54};
     //Création de la seed pour le mélange aléatoire du paquet de cartes
     unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
-    //mélange des indices des cartes du paquet
+    //mélange des numéros des cartes du paquet
     std::shuffle(idCards.begin(), idCards.end(), std::default_random_engine(seed));
 
     for(auto& i: idCards)
@@ -68,10 +66,10 @@ void Deck::shuffleDeck()
 
     //On crée un deck temporaire qui va contenir le deck mélangé
     std::list<Card> *tempDeck = new std::list<Card>();
-    //On parcourt le tableau d'indice mélangé
+    //On parcourt le tableau des numéros de cartes mélangé
     for(std::array<int,54>::iterator it = idCards.begin(); it != idCards.end(); ++it)
     {
-        //On récupère la position de la carte dans le deck m_cardsDeck à l'id correspondant dans le tableau idCards
+        //On récupère la position de la carte dans le deck m_cardsDeck au numéro correspondant dans le tableau idCards
         std::list<Card>::iterator card = this->findCardById(*it);
         //On ajoute la carte correspondante dans le deck temporaire
         tempDeck->push_back(*card);
@@ -79,13 +77,13 @@ void Deck::shuffleDeck()
         this->m_cardsDeck->erase(card);
     }
 
-    //On libère la mémoire allouée pour le deck initial
+    //On fait en sorte que le deck initial soit vide
     this->m_cardsDeck->clear();
     this->m_cardsDeck = nullptr;
     //On stocke l'adresse du deck temporaire dans l'attribut de la classe Deck
     this->m_cardsDeck = tempDeck;
 
-    //Par convention, les deux jokers ont le même numéro 53, donc on modifie l'id du joker rouge (par défaut à 54 pour le mélange des cartes du deck)
+    //Par convention, les deux jokers ont le même numéro 53, donc on modifie celui du joker rouge (par défaut à 54 pour le mélange des cartes du deck)
     std::list<Card>::iterator redJoker = this->findCardById(54);
     (*redJoker).setId(53);
 
@@ -125,8 +123,9 @@ std::list<Card>::iterator Deck::findCardById(int id)
     bool isFound = false;
     while(it != this->m_cardsDeck->end() && !isFound)
     {
-        //On récupère l'id de la carte
+        //On récupère le numéro de la carte
         int idCard = (*it).getId();
+        //Et on le compare avec celui de la carte à rechercher
         if(idCard == id)
             isFound = true;
         else
@@ -143,6 +142,7 @@ std::list<Card>::iterator Deck::findCardByName(const std::string& name)
     {
         //On récupère le nom de la carte
         std::string cardName = (*it).getName();
+        //et on le compare avec celui de la carte à rechercher
         if(cardName.compare(name) == 0)
             isFound = true;
         else

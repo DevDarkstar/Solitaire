@@ -1,10 +1,7 @@
 #include "encryptanddecrypt.hpp"
 
-EncryptAndDecrypt::EncryptAndDecrypt(const std::string& key)
+EncryptAndDecrypt::EncryptAndDecrypt(const std::string& key): m_codingKeyString(key), m_codingKeyNumbers(this->convertKeyToNumbers(key))
 {
-    this->m_codingKeyString = key;
-    this->m_codingKeyNumbers = nullptr;
-    this->m_codingKeyNumbers = this->convertKeyToNumbers(key);
     std::cout << "La cle vaut " << this->m_codingKeyString << " et sa representation sous forme numerique est ";
     for(std::list<int>::iterator it = this->m_codingKeyNumbers->begin(); it != this->m_codingKeyNumbers->end(); ++it)
     {
@@ -13,11 +10,9 @@ EncryptAndDecrypt::EncryptAndDecrypt(const std::string& key)
     std::cout << std::endl;
 }
 
-EncryptAndDecrypt::EncryptAndDecrypt()
+EncryptAndDecrypt::EncryptAndDecrypt(): m_codingKeyString(""), m_codingKeyNumbers(new std::list<int>())
 {
-    this->m_codingKeyString = "";
-    this->m_codingKeyNumbers = nullptr;
-    this->m_codingKeyNumbers = new std::list<int>();
+
 }
 
 EncryptAndDecrypt::~EncryptAndDecrypt()
@@ -26,7 +21,7 @@ EncryptAndDecrypt::~EncryptAndDecrypt()
     this->m_codingKeyNumbers = nullptr;
 }
 
-std::string EncryptAndDecrypt::getCodingKey()
+std::string EncryptAndDecrypt::getCodingKey() const
 {
     return m_codingKeyString;
 }
@@ -76,7 +71,7 @@ std::string EncryptAndDecrypt::encryptMessage(std::string& message)
     });
 
     std::cout << "-----------------------------------------------------------------------" << std::endl;
-    std::cout << "========== Cryptage du message " << message << " ==========" << std::endl;
+    std::cout << "========== Cryptage du message: " << message << " ==========" << std::endl;
     std::cout << "-----------------------------------------------------------------------" << std::endl;
     std::cout << "========== Cle utilisee pour le cryptage: " << this->getCodingKey() << " ==========" << std::endl;
     std::cout << "-----------------------------------------------------------------------" << std::endl;
@@ -127,7 +122,7 @@ std::string EncryptAndDecrypt::encryptMessage(std::string& message)
 std::string EncryptAndDecrypt::decryptMessage(const std::string& message)
 {
     std::cout << "-----------------------------------------------------------------------" << std::endl;
-    std::cout << "========== Decryptage du message " << message << " ==========" << std::endl;
+    std::cout << "========== Decryptage du message: " << message << " ==========" << std::endl;
     std::cout << "-----------------------------------------------------------------------" << std::endl;
     std::cout << "========== Cle utilisee pour le decryptage: " << this->getCodingKey() << " ==========" << std::endl;
     std::cout << "-----------------------------------------------------------------------" << std::endl;
