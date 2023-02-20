@@ -1,14 +1,10 @@
 #include "deck.hpp"
 #include "encryptanddecrypt.hpp"
-#include <ctime>
-#include <cstdlib>
 
 int main()
 {
-    //génération des nombres pseudo-aléatoires
-    srand((unsigned)time(NULL));
     //On crée un message à crypter puis à décrypter
-    std::string message = "Je cherche la reponse";
+    std::string message = "Quelle est la question deja";
     //On récupère la taille du message
     int messageSize = message.size();
     Deck d;

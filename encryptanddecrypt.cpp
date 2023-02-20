@@ -18,6 +18,7 @@ EncryptAndDecrypt::EncryptAndDecrypt(): m_codingKeyString(""), m_codingKeyNumber
 EncryptAndDecrypt::~EncryptAndDecrypt()
 {
     this->m_codingKeyNumbers->clear();
+    delete this->m_codingKeyNumbers;
     this->m_codingKeyNumbers = nullptr;
 }
 
@@ -65,7 +66,7 @@ std::list<int> *EncryptAndDecrypt::convertKeyToNumbers(const std::string& key)
 std::string EncryptAndDecrypt::encryptMessage(std::string& message)
 {
     //On passe l'intégralité du message en majuscules
-    std::transform(message.begin(), message.end(), message.begin(), [](char c)
+    std::transform(message.begin(), message.end(), message.begin(), [&](char c)
     {
         return std::toupper(c);
     });
@@ -96,6 +97,7 @@ std::string EncryptAndDecrypt::encryptMessage(std::string& message)
 
     //On vide la liste contenant le message à crypter
     messageToNumbers->clear();
+    delete messageToNumbers;
     messageToNumbers = nullptr;
 
     std::cout << "========== Message crypte sous forme numerique: ";
@@ -111,6 +113,7 @@ std::string EncryptAndDecrypt::encryptMessage(std::string& message)
 
     //On vide la liste contenant le message crypté et on retourne le message final crypté
     encryptedMessage->clear();
+    delete encryptedMessage;
     encryptedMessage = nullptr;
 
     std::cout << "========== Le message crypte est: " << finalMessage << " ==========" << std::endl;
@@ -147,6 +150,7 @@ std::string EncryptAndDecrypt::decryptMessage(const std::string& message)
 
     //On vide la liste contenant le message à crypter
     messageToNumbers->clear();
+    delete messageToNumbers;
     messageToNumbers = nullptr;
 
     std::cout << "========== Message decrypte sous forme numerique: ";
@@ -162,6 +166,7 @@ std::string EncryptAndDecrypt::decryptMessage(const std::string& message)
 
     //On vide la liste contenant le message décrypté et on retourne le message final décrypté
     decryptedMessage->clear();
+    delete decryptedMessage;
     decryptedMessage = nullptr;
 
     std::cout << "========== Le message decrypte est: " << finalMessage << " ==========" << std::endl;
