@@ -80,6 +80,7 @@ void Deck::shuffleDeck()
 
     //On fait en sorte que le deck initial soit vide
     this->m_cardsDeck->clear();
+    delete this->m_cardsDeck;
     this->m_cardsDeck = nullptr;
     //On stocke l'adresse du deck temporaire dans l'attribut de la classe Deck
     this->m_cardsDeck = tempDeck;
@@ -176,10 +177,10 @@ std::string Deck::createKeyStream(int size)
             //On récupère le numéro de la première carte du deck
             int n = this->m_cardsDeck->front().getId();
             std::cout << "numero de la premiere carte du deck: " << n << std::endl;
-            //On crée un itérateur que l'on fait pointer sur la n-ième carte du deck
+            //On crée un itérateur que l'on fait pointer sur la n+1-ième carte du deck
             std::list<Card>::iterator it = this->m_cardsDeck->begin();
             std::advance(it, n);
-            //On récupère le numéro de la n-ième carte du deck
+            //On récupère le numéro de la n+1-ième carte du deck
             int m = (*it).getId();
             std::cout << "numero de la " << n+1 << "-ieme carte du deck: " << m << std::endl;
             //Si c'est un joker (numéro de carte = 53), on recommence une opération complète de mélange (on repart à la première étape)
