@@ -44,6 +44,7 @@ void Deck::generateDeck()
 void Deck::resetDeck()
 {
     this->m_cardsDeck->clear();
+    delete this->m_cardsDeck;
     this->m_cardsDeck = nullptr;
     this->m_cardsDeck = new std::list<Card>();
     this->generateDeck();
