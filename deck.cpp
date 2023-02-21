@@ -9,8 +9,6 @@ Deck::~Deck()
 {
     this->m_cardsDeck->clear();
     delete this->m_cardsDeck;
-    if(this->m_cardsDeck == nullptr)
-        std::cout << "liste supprimee" << std::endl;
 }
 
 void Deck::generateDeck()
