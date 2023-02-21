@@ -9,7 +9,6 @@ Deck::~Deck()
 {
     this->m_cardsDeck->clear();
     delete this->m_cardsDeck;
-    this->m_cardsDeck = nullptr;
     if(this->m_cardsDeck == nullptr)
         std::cout << "liste supprimee" << std::endl;
 }
@@ -45,7 +44,6 @@ void Deck::resetDeck()
 {
     this->m_cardsDeck->clear();
     delete this->m_cardsDeck;
-    this->m_cardsDeck = nullptr;
     this->m_cardsDeck = new std::list<Card>();
     this->generateDeck();
     this->shuffleDeck();
@@ -82,7 +80,6 @@ void Deck::shuffleDeck()
     //On fait en sorte que le deck initial soit vide
     this->m_cardsDeck->clear();
     delete this->m_cardsDeck;
-    this->m_cardsDeck = nullptr;
     //On stocke l'adresse du deck temporaire dans l'attribut de la classe Deck
     this->m_cardsDeck = tempDeck;
 
