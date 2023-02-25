@@ -5,10 +5,34 @@ Deck::Deck(): m_cardsDeck(new std::list<Card>())
     this->generateDeck();
 }
 
+Deck::Deck(std::list<Card> *cards): m_cardsDeck(new std::list<Card>())
+{
+    for(std::list<Card>::iterator it = cards->begin(); it != cards->end(); ++it)
+    {
+        this->m_cardsDeck->push_back(*it);
+    }
+}
+
 Deck::~Deck()
 {
     this->m_cardsDeck->clear();
     delete this->m_cardsDeck;
+}
+
+std::list<Card>* Deck::getDeck()
+{
+    return m_cardsDeck;
+}
+
+void Deck::setDeck(std::list<Card> *cards)
+{
+    //On vide le deck actuel
+    this->m_cardsDeck->clear();
+    //Et on le remplit avec les cartes du nouveau deck
+    for(std::list<Card>::iterator it = cards->begin(); it != cards->end(); ++it)
+    {
+        this->m_cardsDeck->push_back(*it);
+    }
 }
 
 void Deck::generateDeck()
@@ -38,15 +62,6 @@ void Deck::generateDeck()
     this->m_cardsDeck->push_back(Card(id, "RedJoker"));
 }
 
-void Deck::resetDeck()
-{
-    this->m_cardsDeck->clear();
-    delete this->m_cardsDeck;
-    this->m_cardsDeck = new std::list<Card>();
-    this->generateDeck();
-    this->shuffleDeck();
-}
-
 void Deck::shuffleDeck()
 {
     //Création d'un tableau contenant les numéros des cartes du paquet
@@ -56,7 +71,7 @@ void Deck::shuffleDeck()
     //mélange des numéros des cartes du paquet
     std::shuffle(idCards.begin(), idCards.end(), std::default_random_engine(seed));
 
-    for(auto& i: idCards)
+    for(int i: idCards)
     {
         std::cout << i << " ";
     }
@@ -85,8 +100,8 @@ void Deck::shuffleDeck()
     std::list<Card>::iterator redJoker = this->findCardById(54);
     (*redJoker).setId(53);
 
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
-    std::cout << "========== Deck apres melange ==========" << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
+    std::cout << "========== Deck apres melange ==========\n";
     std::cout << "-----------------------------------------------------------------------" << std::endl;
     this->displayDeck();
 }
@@ -168,7 +183,7 @@ std::string Deck::createKeyStream(int size)
             this->thirdStep();
             this->fourthStep();
             //Cinquième étape -> lecture d'une lettre pseudo-aléatoire
-            std::cout << "-----------------------------------------------------------------------" << std::endl;
+            std::cout << "-----------------------------------------------------------------------\n";
             std::cout << "=== Cinquieme etape -> lecture d'une lettre pseudo-aleatoire ===" << std::endl;
             //On récupère le numéro de la première carte du deck
             int n = this->m_cardsDeck->front().getId();
@@ -203,7 +218,7 @@ std::string Deck::createKeyStream(int size)
 
 void Deck::firstStep()
 {
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
     std::cout << "=== Premiere etape -> On fait reculer le joker noir d'une place ===" << std::endl;
     
 
@@ -237,14 +252,14 @@ void Deck::firstStep()
         this->m_cardsDeck->insert(pos, tempJoker);
     }
 
-    std::cout << "=========== Deck apres la premiere etape ===========" << std::endl;
+    std::cout << "=========== Deck apres la premiere etape ===========\n";
     std::cout << "-----------------------------------------------------------------------" << std::endl;
     this->displayDeck();
 }
 
 void Deck::secondStep()
 {
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
     std::cout << "=== Seconde etape -> On fait reculer le joker rouge de deux places ===" << std::endl;
     
 
@@ -291,14 +306,14 @@ void Deck::secondStep()
         this->m_cardsDeck->insert(pos, tempJoker);
     }
 
-    std::cout << "=========== Deck apres la seconde etape ===========" << std::endl;
+    std::cout << "=========== Deck apres la seconde etape ===========\n";
     std::cout << "-----------------------------------------------------------------------" << std::endl;
     this->displayDeck();
 }
 
 void Deck::thirdStep()
 {
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
     std::cout << "=== Troisieme etape -> On fait une double coupe par rapport aux jokers ===" << std::endl;
 
     //On récupère la position des deux jokers
@@ -340,14 +355,14 @@ void Deck::thirdStep()
         this->m_cardsDeck->insert(this->m_cardsDeck->end(), firstFragment.begin(), firstFragment.end());
     }
 
-    std::cout << "=========== Deck apres la troisieme etape ===========" << std::endl;
+    std::cout << "=========== Deck apres la troisieme etape ===========\n";
     std::cout << "-----------------------------------------------------------------------" << std::endl;
     this->displayDeck();
 }
 
 void Deck::fourthStep()
 {
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
+    std::cout << "-----------------------------------------------------------------------\n";
     std::cout << "=== Quatrieme etape -> Coupe simple determinee par la derniere carte ===" << std::endl;
 
     //On récupère le numéro de la dernière carte
@@ -367,7 +382,7 @@ void Deck::fourthStep()
         this->m_cardsDeck->insert(std::prev(this->m_cardsDeck->end()), fragment.begin(), fragment.end());
     }
 
-    std::cout << "=========== Deck apres la quatrieme etape ===========" << std::endl;
+    std::cout << "=========== Deck apres la quatrieme etape ===========\n";
     std::cout << "-----------------------------------------------------------------------" << std::endl;
     this->displayDeck();
 }

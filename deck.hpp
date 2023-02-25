@@ -16,9 +16,11 @@ private:
 std::list<Card> *m_cardsDeck;
 public:
     Deck();
+    Deck(std::list<Card> *cards);
     ~Deck();
+    std::list<Card>* getDeck();
+    void setDeck(std::list<Card> *cards);
     void generateDeck();
-    void resetDeck();
     void shuffleDeck();
     void displayDeck();
     void displayDetailedDeck();
