@@ -4,9 +4,11 @@
 int main()
 {
     //On crée un message à crypter puis à décrypter
-    std::string message = "Cela ne nous regarde pas";
+    std::string message = "Celä ne nous rëgarde, pas.";
+    //On transforme le message (suppression des accents, des caractères de fin de phrase,...) afin de faciliter son cryptage
+    std::string correctedMessage = EncryptAndDecrypt::correctMessage(message); 
     //On récupère la taille du message
-    int messageSize = message.size();
+    int messageSize = correctedMessage.size();
     //Création du deck du créateur des messages crypés
     Deck d_creator;
     d_creator.displayDetailedDeck();
@@ -20,7 +22,7 @@ int main()
 
     EncryptAndDecrypt cad(keyStream);
     //On crypte le message
-    std::string encryptedMessage = cad.encryptMessage(message);
+    std::string encryptedMessage = cad.encryptMessage(correctedMessage);
 
     //On l'envoie au correspondant
     //On génère une clé de décryptage à partir de la taille du message crypté
