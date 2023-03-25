@@ -44,6 +44,8 @@ std::string EncryptAndDecrypt::convertKeyToString(std::list<int> *key)
     return convertedKey;
 }
 
+
+
 std::list<int> *EncryptAndDecrypt::convertKeyToNumbers(const std::string& key)
 {
     //On initialise la liste d'entiers qui contiendra la clé une fois convertie en nombres
@@ -62,39 +64,66 @@ std::list<int> *EncryptAndDecrypt::convertKeyToNumbers(const std::string& key)
     return convertedKey;
 }
 
+std::string& EncryptAndDecrypt::replaceStopByDots(std::string& message)
+{
+    //On passe l'intégralité du message en minuscules sauf la première lettre
+    std::string::iterator it = message.begin();
+    std::advance(it, 1);
+    std::transform(it, message.end(), it, [&](char c)
+    {
+        return std::tolower(c);
+    });
+
+    size_t found = 0;
+    do{
+        found = message.find(" stop", found);
+        if(found != std::string::npos)
+        {
+            message.replace(found, 5, ".");
+            found += 2;
+            //On récupère le caractère suivant
+            char c = message[found];
+            //Et on le passe en majuscules
+            message[found] = c - 32;
+        }
+    }while(found != std::string::npos);
+
+    return message;
+}
+
 std::string EncryptAndDecrypt::correctMessage(std::string& message)
 {
     std::string tempMessage;
     //Et on actualise le message en remplaçant les caractères spéciaux par leur version classique
     //pour les a
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("à|â|ä"), "a");
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\x85|\x83|\x84"), "a");
     message = "";
     //pour les e
-    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("é|è|ê|ë"), "e");
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x82|\x8A|\x88|\x89"), "e");
     tempMessage = "";
     //pour les i
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("ï|î"), "i");
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\x8B|\x8C"), "i");
     message = "";
     //pour les o
-    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("ô|ö"), "o");
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x91|\x92"), "o");
     tempMessage = "";
     //pour les u
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("ù|û|ü|µ"), "u");
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\x95|\x94|\x81"), "u");
     message = "";
-    //pour le y
-    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("ÿ"), "y");
-    tempMessage = "";
     //pour le c
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("ç"), "c");
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x87"), "c");
+    tempMessage = "";
+    //les caractères de milieu de phrase
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex(",|:"), "");
     message = "";
     //pour le e commercial
-    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("&"), "et");
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x26"), "et");
     tempMessage = "";
     //pour les caractères de fin de phrase
     std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\\.|!|;|\\?"), " stop");
     message = "";
-    //et enfin les caractères de milieu de phrase
-    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex(",|:"), "");
+    //et enfin pour les caractères de liaison
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\\-|'|_"), " ");
     tempMessage = "";
 
     return message;
@@ -192,9 +221,12 @@ std::string EncryptAndDecrypt::decryptMessage(const std::string& message)
     //Enfin, on transforme le message décrypté en chaine de caractères
     std::string finalMessage = this->convertKeyToString(decryptedMessage);
 
+
     //On vide la liste contenant le message décrypté et on retourne le message final décrypté
     decryptedMessage->clear();
     delete decryptedMessage;
+
+    finalMessage = this->replaceStopByDots(finalMessage);
 
     std::cout << "========== Le message decrypte est: " << finalMessage << " ==========\n";
     std::cout << "-----------------------------------------------------------------------" << std::endl;
