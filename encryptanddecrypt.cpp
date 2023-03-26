@@ -44,8 +44,6 @@ std::string EncryptAndDecrypt::convertKeyToString(std::list<int> *key)
     return convertedKey;
 }
 
-
-
 std::list<int> *EncryptAndDecrypt::convertKeyToNumbers(const std::string& key)
 {
     //On initialise la liste d'entiers qui contiendra la clé une fois convertie en nombres
@@ -221,15 +219,11 @@ std::string EncryptAndDecrypt::decryptMessage(const std::string& message)
     //Enfin, on transforme le message décrypté en chaine de caractères
     std::string finalMessage = this->convertKeyToString(decryptedMessage);
 
-
     //On vide la liste contenant le message décrypté et on retourne le message final décrypté
     decryptedMessage->clear();
     delete decryptedMessage;
 
     finalMessage = this->replaceStopByDots(finalMessage);
-
-    std::cout << "========== Le message decrypte est: " << finalMessage << " ==========\n";
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
 
     return finalMessage;
 }

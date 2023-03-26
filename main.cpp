@@ -4,14 +4,9 @@
 
 int main()
 {
-    //On crée un message à crypter puis à décrypter
-    //std::string message = "Celä ne nous rëgarde, pas. Mais vraiment pas!";
-    
-    //On récupère la taille du message
-    //int messageSize = correctedMessage.size();
-    //Création du deck du créateur des messages crypés
+    //Création du deck du créateur des messages cryptés
     Deck d_creator;
-    d_creator.displayDetailedDeck();
+    //d_creator.displayDetailedDeck();
     std::cout << "melange du deck...\n" << std::endl;
     d_creator.shuffleDeck();
 
@@ -26,11 +21,13 @@ int main()
     do{
         char answer[20];
 
+        std::cout << "********************************\n";
         std::cout << "Que souhaitez-vous faire ?\n";
         std::cout << "1) -- Crypter un message --\n";
         std::cout << "2) -- Decrypter un message --\n";
         std::cout << "3) -- Resynchroniser les deux decks --\n";
-        std::cout << "4) -- Quitter le programme --" << std::endl;
+        std::cout << "4) -- Quitter le programme --\n";
+        std::cout << "********************************"<< std::endl;
 
         std::cin >> answer;
         int choice = atoi(answer);
@@ -70,7 +67,7 @@ int main()
                 }
                 else
                 {
-                    std::cout << "Impossible d'ouvrir le fichier demande..." << std::endl;
+                    std::cout << "\n+++ Impossible d'ouvrir le fichier demande... +++" << std::endl;
                     isRunning = false;
                 }
                 break;
@@ -101,7 +98,7 @@ int main()
                     file.close();
                 }
                 else
-                    std::cout << "Le fichier que vous souhaitez ouvrir n'existe pas..." << std::endl;
+                    std::cout << "\n+++ Le fichier que vous souhaitez ouvrir n'existe pas... +++" << std::endl;
                 break;
             }
             case 3:
@@ -115,12 +112,12 @@ int main()
                 }
                 //Et on vide la liste
                 fileNames.clear();
-                std::cout << "Les deux decks ont ete resynchronises." << std::endl;
+                std::cout << "\n+++ Les deux decks ont ete resynchronises. +++" << std::endl;
                 break;
             }
             case 4:
             {
-                std::cout << "Sortie du programme..." << std::endl;
+                std::cout << "\nSortie du programme..." << std::endl;
                 //On supprime tous les fichiers créés
                 for(std::list<std::string>::iterator it = fileNames.begin(); it != fileNames.end(); ++it)
                 {
@@ -130,10 +127,9 @@ int main()
                 break;
             }
             default:
-                std::cout << "Le choix que vous avez indique est incorrect..." << std::endl;
+                std::cout << "\n+++ Le choix que vous avez indique est incorrect... +++" << std::endl;
         }
     }while(isRunning);
 
     return 0;
 }
-
