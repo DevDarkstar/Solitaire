@@ -21,7 +21,7 @@ public:
     std::list<Card>* getDeck();
     void setDeck(std::list<Card> *cards);
     void generateDeck();
-    void shuffleDeck();
+    void shuffleDeck(const std::string& value);
     void displayDeck();
     void displayDetailedDeck();
     std::list<Card>::iterator findCardById(int id);
@@ -31,6 +31,7 @@ public:
     void secondStep();
     void thirdStep();
     void fourthStep();
+    friend bool operator==(Deck& deck1, Deck& deck2);
 };
 
 #endif

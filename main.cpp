@@ -1,14 +1,20 @@
 #include "deck.hpp"
 #include "encryptanddecrypt.hpp"
+#include "solitairetest.hpp"
 #include <fstream>
 
 int main()
 {
+    //Création de la classe de test pour tester la robustesse du programme
+    SolitaireTest* test = new SolitaireTest();
+    test->tests();
+
+    delete test;
     //Création du deck du créateur des messages cryptés
     Deck d_creator;
     //d_creator.displayDetailedDeck();
     std::cout << "melange du deck...\n" << std::endl;
-    d_creator.shuffleDeck();
+    d_creator.shuffleDeck("random");
 
     //Création ensuite du deck du correspondant contenant le même deck que le créateur des messages
     Deck d_correspondant(d_creator.getDeck());

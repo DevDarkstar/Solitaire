@@ -30,3 +30,8 @@ void Card::setId(int id)
     this->m_id = id;
 }
 
+bool operator==(const Card& card1, const Card& card2)
+{
+    return (card1.getId() == card2.getId() && card1.getName().compare(card2.getName()) == 0);
+}
+

@@ -14,8 +14,8 @@ class EncryptAndDecrypt
     std::list<int> *m_codingKeyNumbers;
 
     public:
-    explicit EncryptAndDecrypt(const std::string& key);
     EncryptAndDecrypt();
+    explicit EncryptAndDecrypt(const std::string& key);
     ~EncryptAndDecrypt();
     std::string getCodingKey() const;
     std::string convertKeyToString(std::list<int> *key);

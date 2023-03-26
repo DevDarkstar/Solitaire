@@ -62,20 +62,24 @@ void Deck::generateDeck()
     this->m_cardsDeck->push_back(Card(id, "RedJoker"));
 }
 
-void Deck::shuffleDeck()
+void Deck::shuffleDeck(const std::string& value)
 {
     //Création d'un tableau contenant les numéros des cartes du paquet
     std::array<int,54> idCards {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54};
-    //Création de la seed pour le mélange aléatoire du paquet de cartes
-    unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
-    //mélange des numéros des cartes du paquet
-    std::shuffle(idCards.begin(), idCards.end(), std::default_random_engine(seed));
-
-    for(int i: idCards)
+    //Si le mélange est aléatoire
+    if(value.compare("random") == 0)
     {
-        std::cout << i << " ";
+        //Création de la seed pour le mélange aléatoire du paquet de cartes
+        unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
+        //mélange des numéros des cartes du paquet
+        std::shuffle(idCards.begin(), idCards.end(), std::default_random_engine(seed));
     }
-    std::cout << std::endl;
+    else
+    {
+        unsigned int seed = atoi(value.c_str());
+        //mélange des numéros des cartes du paquet
+        std::shuffle(idCards.begin(), idCards.end(), std::default_random_engine(seed));
+    }
 
     //On crée un deck temporaire qui va contenir le deck mélangé
     std::list<Card> *tempDeck = new std::list<Card>();
@@ -99,11 +103,6 @@ void Deck::shuffleDeck()
     //Par convention, les deux jokers ont le même numéro 53, donc on modifie celui du joker rouge (par défaut à 54 pour le mélange des cartes du deck)
     std::list<Card>::iterator redJoker = this->findCardById(54);
     (*redJoker).setId(53);
-
-    std::cout << "-----------------------------------------------------------------------\n";
-    std::cout << "========== Deck apres melange ==========\n";
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
-    this->displayDeck();
 }
 
 void Deck::displayDeck()
@@ -385,4 +384,26 @@ void Deck::fourthStep()
     std::cout << "=========== Deck apres la quatrieme etape ===========\n";
     std::cout << "-----------------------------------------------------------------------" << std::endl;
     this->displayDeck();
+}
+
+bool operator==(Deck& deck1, Deck& deck2)
+{
+    bool areEqual = true;
+    std::list<Card> *cards1 = deck1.getDeck();
+    std::list<Card> *cards2 = deck2.getDeck();
+
+    std::list<Card>::iterator it1 = cards1->begin();
+    std::list<Card>::iterator it2 = cards2->begin();
+
+    while(it1 != cards1->end() && areEqual)
+    {
+        if(*it1 == *it2)
+        {
+            ++it1;
+            ++it2;
+        }
+        else
+            areEqual = false;
+    }
+    return areEqual;
 }

@@ -1,5 +1,10 @@
 #include "encryptanddecrypt.hpp"
 
+EncryptAndDecrypt::EncryptAndDecrypt(): m_codingKeyString(""), m_codingKeyNumbers(new std::list<int>())
+{
+
+}
+
 EncryptAndDecrypt::EncryptAndDecrypt(const std::string& key): m_codingKeyString(key), m_codingKeyNumbers(this->convertKeyToNumbers(key))
 {
     std::cout << "La cle vaut " << this->m_codingKeyString << " et sa representation sous forme numerique est ";
@@ -8,11 +13,6 @@ EncryptAndDecrypt::EncryptAndDecrypt(const std::string& key): m_codingKeyString(
         std::cout << *it << " ";
     }
     std::cout << std::endl;
-}
-
-EncryptAndDecrypt::EncryptAndDecrypt(): m_codingKeyString(""), m_codingKeyNumbers(new std::list<int>())
-{
-
 }
 
 EncryptAndDecrypt::~EncryptAndDecrypt()

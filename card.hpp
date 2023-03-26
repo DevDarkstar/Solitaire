@@ -15,6 +15,7 @@ class Card
         std::string getName() const;
         int getId() const;
         void setId(int id);
+        friend bool operator==(const Card& card1, const Card& card2);
 };
 
 #endif
