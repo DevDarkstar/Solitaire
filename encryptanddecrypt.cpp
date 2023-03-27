@@ -21,9 +21,29 @@ EncryptAndDecrypt::~EncryptAndDecrypt()
     delete this->m_codingKeyNumbers;
 }
 
+void EncryptAndDecrypt::setCodingKeyString(const std::string& key)
+{
+    this->m_codingKeyString = key;
+    this->setCodingKeyNumbers(this->convertKeyToNumbers(key));
+}
+
+void EncryptAndDecrypt::setCodingKeyNumbers(std::list<int> *key)
+{
+    this->m_codingKeyNumbers->clear();
+    for(std::list<int>::iterator it = key->begin(); it != key->end(); ++it)
+    {
+        this->m_codingKeyNumbers->push_back(*it);
+    }
+}
+
 std::string EncryptAndDecrypt::getCodingKey() const
 {
     return m_codingKeyString;
+}
+
+std::list<int>* EncryptAndDecrypt::getCodingKeyNumbers() const
+{
+    return m_codingKeyNumbers;
 }
 
 std::string EncryptAndDecrypt::convertKeyToString(std::list<int> *key)
@@ -224,6 +244,9 @@ std::string EncryptAndDecrypt::decryptMessage(const std::string& message)
     delete decryptedMessage;
 
     finalMessage = this->replaceStopByDots(finalMessage);
+
+    std::cout << "========== Le message decrypte est: " << finalMessage << " ==========\n";
+    std::cout << "-----------------------------------------------------------------------" << std::endl;
 
     return finalMessage;
 }

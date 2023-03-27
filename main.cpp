@@ -12,8 +12,6 @@ int main()
     delete test;
     //Création du deck du créateur des messages cryptés
     Deck d_creator;
-    //d_creator.displayDetailedDeck();
-    std::cout << "melange du deck...\n" << std::endl;
     d_creator.shuffleDeck("random");
 
     //Création ensuite du deck du correspondant contenant le même deck que le créateur des messages
@@ -45,7 +43,7 @@ int main()
                 std::cin.clear();
                 std::cin.sync();
                 std::string message;
-                std::cout << "Indiquer le message que vous souhaitez crypter:  ";
+                std::cout << "Indiquer le message que vous souhaitez crypter: ";
                 std::getline(std::cin, message);
 
                 std::cin.clear();

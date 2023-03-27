@@ -19,7 +19,7 @@ Deck::~Deck()
     delete this->m_cardsDeck;
 }
 
-std::list<Card>* Deck::getDeck()
+std::list<Card>* Deck::getDeck() const
 {
     return m_cardsDeck;
 }

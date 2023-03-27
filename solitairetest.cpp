@@ -18,6 +18,11 @@ void SolitaireTest::tests()
     test_thirdStep();
     test_fourthStep(); 
     test_createKeyStream();
+    test_correctMessage();
+    test_setCodingKeyString();
+    test_encryptMessage();
+    test_decryptMessage();
+    test_replaceStopByDots();
 }
 
 void SolitaireTest::test_generateDeck()
@@ -283,7 +288,6 @@ void SolitaireTest::test_createKeyStream()
         //lettre de l'alphabet soit "Z"
         std::list<Card>::iterator it = cards->begin();
         std::advance(it, card_first.getId());
-        std::cout << (*it).getName();
         if((*it).getName().compare("RP") == 0)
         {
             if(result.compare("Z") == 0)
@@ -307,6 +311,128 @@ void SolitaireTest::test_createKeyStream()
     else
     {
         std::cout << "createKeyStream FALSE\n";
+        exit(1);
+    }
+}
+
+void SolitaireTest::test_correctMessage()
+{
+    std::string message = "Un message.";
+    std::string correctedMessage = EncryptAndDecrypt::correctMessage(message);
+
+    if(correctedMessage.compare("Un message stop") == 0)
+    {
+        std::cout << "correctMessage OK\n";
+        std::cout << "****************\n";
+    }
+    else
+    {
+        std::cout << "correctMessage FALSE\n";
+        exit(1);
+    }
+}
+
+void SolitaireTest::test_setCodingKeyString()
+{
+    //On crée un message pour tester les fonctions de la classe EncryptAndDecrypt
+    std::string message = "Un message stop";
+    std::string key = m_creator.createKeyStream(message.size());
+    m_cad.setCodingKeyString(key);
+    std::string keyString = m_cad.getCodingKey();
+    if(keyString.compare("PMKKAQVQKSAMVPP") == 0)
+    {
+        int numbers[] = {16, 13, 11, 11, 1, 17, 22, 17, 11, 19, 1, 13, 22, 16, 16};
+        std::list<int> *keyNumber = m_cad.getCodingKeyNumbers();
+        bool areTheSame = true;
+        int i = 0;
+        std::list<int>::iterator it = keyNumber->begin();
+        while(areTheSame && i < message.size() && it != keyNumber->end())
+        {
+            if(numbers[i] != *it)
+                areTheSame = false;
+            else
+            {
+                i++;
+                ++it;
+            }
+        }
+        if(areTheSame)
+        {
+            std::cout << "getCodingKey OK\n";
+            std::cout << "****************\n";
+            std::cout << "getCodingKeyNumbers OK\n";
+            std::cout << "****************\n";
+            std::cout << "setCodingKeyString OK\n";
+            std::cout << "****************\n";
+            std::cout << "setCodingKeyNumbers OK\n";
+            std::cout << "****************\n";
+            std::cout << "convertKeyToNumbers OK\n";
+            std::cout << "****************\n";
+        }
+        else
+        {
+            std::cout << "setCodingKeyString FALSE\n";
+            std::cout << "setCodingKeyNumbers FALSE\n";
+            exit(1);
+        }
+    }
+    else
+    {
+        std::cout << "setCodingKeyString FALSE\n";
+        std::cout << "setCodingKeyNumbers FALSE\n";
+        exit(1);
+    }
+}
+
+void SolitaireTest::test_encryptMessage()
+{
+    std::string message = "Un message stop";
+    std::string encryptedMessage = m_cad.encryptMessage(message);  
+    if(encryptedMessage.compare("KAKXFJORRXAFPEF") == 0)
+    {
+        std::cout << "****************\n";
+        std::cout << "encryptMessage OK\n";
+        std::cout << "****************\n";
+    }
+    else
+    {
+        std::cout << "encryptMessage FALSE\n";
+        exit(1);
+    }
+}
+
+void SolitaireTest::test_decryptMessage()
+{
+    std::string cryptedMessage = "KAKXFJORRXAFPEF";
+    std::string decryptedMessage = m_cad.decryptMessage(cryptedMessage);  
+    if(decryptedMessage.compare("Un message.") == 0)
+    {
+        std::cout << "****************\n";
+        std::cout << "decryptMessage OK\n";
+        std::cout << "****************\n";
+        std::cout << "convertKeyToString OK\n";
+        std::cout << "****************\n";
+    }
+    else
+    {
+        std::cout << "decryptMessage FALSE\n";
+        exit(1);
+    }
+}
+
+void SolitaireTest::test_replaceStopByDots()
+{
+    std::string message = "un MeSsaGe stop";
+    message = m_cad.replaceStopByDots(message);
+    if(message.compare("un message.") == 0)
+    {
+        std::cout << "****************\n";
+        std::cout << "replaceStopByDots OK\n";
+        std::cout << "****************\n";
+    }
+    else
+    {
+        std::cout << "replaceStopByDots FALSE\n";
         exit(1);
     }
 }

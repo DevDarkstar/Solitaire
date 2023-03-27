@@ -18,7 +18,7 @@ public:
     Deck();
     Deck(std::list<Card> *cards);
     ~Deck();
-    std::list<Card>* getDeck();
+    std::list<Card>* getDeck() const;
     void setDeck(std::list<Card> *cards);
     void generateDeck();
     void shuffleDeck(const std::string& value);

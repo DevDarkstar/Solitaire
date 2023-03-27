@@ -17,7 +17,10 @@ class EncryptAndDecrypt
     EncryptAndDecrypt();
     explicit EncryptAndDecrypt(const std::string& key);
     ~EncryptAndDecrypt();
+    void setCodingKeyString(const std::string& key);
+    void setCodingKeyNumbers(std::list<int> *key);
     std::string getCodingKey() const;
+    std::list<int>* getCodingKeyNumbers() const;
     std::string convertKeyToString(std::list<int> *key);
     std::list<int>* convertKeyToNumbers(const std::string& key);
     std::string& replaceStopByDots(std::string& message);

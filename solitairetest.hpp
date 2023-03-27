@@ -26,6 +26,11 @@ class SolitaireTest
     void test_thirdStep();
     void test_fourthStep();
     void test_createKeyStream();
+    void test_correctMessage();
+    void test_setCodingKeyString();
+    void test_encryptMessage();
+    void test_decryptMessage();
+    void test_replaceStopByDots();
 };
 
 #endif
