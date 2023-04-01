@@ -12,7 +12,7 @@ int main()
     delete test;
     //Création du deck du créateur des messages cryptés
     Deck d_creator;
-    d_creator.shuffleDeck("random");
+    d_creator.shuffleDeck("1");
 
     //Création ensuite du deck du correspondant contenant le même deck que le créateur des messages
     Deck d_correspondant(d_creator.getDeck());
@@ -25,7 +25,7 @@ int main()
     do{
         char answer[20];
 
-        std::cout << "********************************\n";
+        std::cout << "\n********************************\n";
         std::cout << "Que souhaitez-vous faire ?\n";
         std::cout << "1) -- Crypter un message --\n";
         std::cout << "2) -- Decrypter un message --\n";
@@ -34,24 +34,59 @@ int main()
         std::cout << "********************************"<< std::endl;
 
         std::cin >> answer;
-        int choice = atoi(answer);
+        int displayInfos = atoi(answer);
 
-        switch(choice)
+        switch(displayInfos)
         {
             case 1:
             {
-                std::cin.clear();
-                std::cin.sync();
+                //synchronisation de std::cin en fonction du système d'exploitation
+                #if defined(_WIN32)
+                    std::cin.clear();
+                    std::cin.sync();
+                #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+                    std::cout << "unix\n";
+                #endif              
                 std::string message;
                 std::cout << "Indiquer le message que vous souhaitez crypter: ";
                 std::getline(std::cin, message);
 
-                std::cin.clear();
-                std::cin.sync();
+                #if defined(_WIN32)
+                    std::cin.clear();
+                    std::cin.sync();
+                #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+                    std::cout << "unix\n";
+                #endif  
 
                 std::string fileName;
                 std::cout << "Indiquer le nom du fichier dans lequel sauvegarder votre message: ";
                 std::getline(std::cin, fileName);
+
+                std::string displayInfos;
+                do{
+                    #if defined(_WIN32)
+                        std::cin.clear();
+                        std::cin.sync();
+                    #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+                        std::cout << "unix\n";
+                    #endif
+                    std::cout << "Voulez-vous afficher les informations detaillees du programme?\n";
+                    std::cout << "'O' pour oui - 'N' pour non: ";
+                    std::getline(std::cin, displayInfos);
+
+                    if(displayInfos.compare("O") == 0)
+                    {
+                        Deck::displayInfos = true;
+                        EncryptAndDecrypt::displayInfos = true;
+                    }
+                    else if(displayInfos.compare("N") == 0)
+                    {
+                        Deck::displayInfos = false;
+                        EncryptAndDecrypt::displayInfos = false;
+                    }
+                    else
+                        std::cout << "La valeur indiquee est incorrect...\n";
+                }while(displayInfos.compare("O") != 0 && displayInfos.compare("N") != 0);               
 
                 //Création du fichier en mode écriture
                 std::ofstream file(fileName);
@@ -78,11 +113,41 @@ int main()
             }
             case 2:
             {
-                std::cin.clear();
-                std::cin.sync();
+                #if defined(_WIN32)
+                    std::cin.clear();
+                    std::cin.sync();
+                #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+                    std::cout << "unix\n";
+                #endif  
                 std::string fileName;
                 std::cout << "Indiquez le nom de fichier contenant le nom de fichier que vous souhaitez decrypter: ";
                 std::getline(std::cin, fileName);
+
+                std::string displayInfos;
+                do{
+                    #if defined(_WIN32)
+                        std::cin.clear();
+                        std::cin.sync();
+                    #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+                        std::cout << "unix\n";
+                    #endif
+                    std::cout << "Voulez-vous afficher les informations detaillees du programme?\n";
+                    std::cout << "'O' pour oui - 'N' pour non: ";
+                    std::getline(std::cin, displayInfos);
+
+                    if(displayInfos.compare("O") == 0)
+                    {
+                        Deck::displayInfos = true;
+                        EncryptAndDecrypt::displayInfos = true;
+                    }
+                    else if(displayInfos.compare("N") == 0)
+                    {
+                        Deck::displayInfos = false;
+                        EncryptAndDecrypt::displayInfos = false;
+                    }
+                    else
+                        std::cout << "La valeur indiquee est incorrect...\n";
+                }while(displayInfos.compare("O") != 0 && displayInfos.compare("N") != 0);
 
                 std::ifstream file(fileName);
                 if(file)
@@ -98,7 +163,7 @@ int main()
                     std::string finalMessage = cad_correspondant.decryptMessage(message);
                     std::cout << "\n*************************************************\n";
                     std::cout << "Le message decrypte est : " << finalMessage << "\n";
-                    std::cout << "*************************************************\n" << std::endl;
+                    std::cout << "*************************************************" << std::endl;
                     file.close();
                 }
                 else

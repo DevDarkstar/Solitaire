@@ -14,6 +14,7 @@ class EncryptAndDecrypt
     std::list<int> *m_codingKeyNumbers;
 
     public:
+    static bool displayInfos;
     EncryptAndDecrypt();
     explicit EncryptAndDecrypt(const std::string& key);
     ~EncryptAndDecrypt();

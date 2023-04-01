@@ -39,13 +39,9 @@ void SolitaireTest::test_generateDeck()
     //Et la dernière carte le joker rouge (RedJoker)
     if(name_first.compare("AT") == 0 && name_last.compare("RedJoker") == 0)
     {
-        std::cout << "****************\n";
         std::cout << "getDeck OK\n";
-        std::cout << "****************\n";
         std::cout << "generateDeck OK\n";
-        std::cout << "****************\n";
         std::cout << "getName OK\n";
-        std::cout << "****************\n";
     }
     else
     {
@@ -57,6 +53,8 @@ void SolitaireTest::test_generateDeck()
 void SolitaireTest::test_shuffleDeck()
 {
     m_creator.shuffleDeck("1");
+    //m_creator.displayDeckWithNumber();
+    //m_creator.displayDeck();
     //On récupère le numéro de la première carte du deck généré
     std::list<Card> *cards = m_creator.getDeck();
     std::list<Card>::iterator it = cards->begin();
@@ -70,9 +68,7 @@ void SolitaireTest::test_shuffleDeck()
     if(id_first == 35 && id_last == 18)
     {
         std::cout << "shuffleDeck OK\n";
-        std::cout << "****************\n";
         std::cout << "getId OK\n";
-        std::cout << "****************\n";
     }
     else
     {
@@ -87,7 +83,6 @@ void SolitaireTest::test_setDeck()
     if(m_correspondant == m_creator)
     {
         std::cout << "setDeck OK\n";
-        std::cout << "****************\n";
     }
     else
     {
@@ -107,7 +102,6 @@ void SolitaireTest::test_findCardById()
     if((*card1).getName().compare("6T") == 0 && (*card2).getName().compare("2P") == 0)
     {
         std::cout << "findCardById OK\n";
-        std::cout << "****************\n";
     }
     else
     {
@@ -127,7 +121,6 @@ void SolitaireTest::test_findCardByName()
     if((*card1).getId() == 27 && (*card2).getId() == 10)
     {
         std::cout << "findCardByName OK\n";
-        std::cout << "****************\n";
     }
     else
     {
@@ -153,9 +146,7 @@ void SolitaireTest::test_firstStep()
         std::advance(it, 6);
         if((*it).getName().compare("BlackJoker") == 0)
         {
-            std::cout << "****************\n";
             std::cout << "firstStep OK\n";
-            std::cout << "****************\n";
         }
         else
         {
@@ -190,9 +181,7 @@ void SolitaireTest::test_secondStep()
         std::advance(it, 2);
         if((*it).getName().compare("RedJoker") == 0)
         {
-            std::cout << "****************\n";
             std::cout << "secondStep OK\n";
-            std::cout << "****************\n";
         }
         else
         {
@@ -225,9 +214,7 @@ void SolitaireTest::test_thirdStep()
         //S'il s'agit bien du 3 de coeur (3H), la fonction est bien fonctionnelle
         if((*it).getName().compare("3H") == 0)
         {
-            std::cout << "****************\n";
             std::cout << "thirdStep OK\n";
-            std::cout << "****************\n";
         }
         else
         {
@@ -262,9 +249,7 @@ void SolitaireTest::test_fourthStep()
     Card new_last_card = cards->back();
     if(last_card == new_last_card && (*it) == penultimateCard)
     {
-        std::cout << "****************\n";
         std::cout << "fourthStep OK\n";
-        std::cout << "****************\n";
     }
     else
     {
@@ -292,9 +277,7 @@ void SolitaireTest::test_createKeyStream()
         {
             if(result.compare("Z") == 0)
             {
-                std::cout << "****************\n";
                 std::cout << "createKeyStream OK\n";
-                std::cout << "****************\n";
             }
             else
             {
@@ -323,7 +306,6 @@ void SolitaireTest::test_correctMessage()
     if(correctedMessage.compare("Un message stop") == 0)
     {
         std::cout << "correctMessage OK\n";
-        std::cout << "****************\n";
     }
     else
     {
@@ -359,15 +341,10 @@ void SolitaireTest::test_setCodingKeyString()
         if(areTheSame)
         {
             std::cout << "getCodingKey OK\n";
-            std::cout << "****************\n";
             std::cout << "getCodingKeyNumbers OK\n";
-            std::cout << "****************\n";
             std::cout << "setCodingKeyString OK\n";
-            std::cout << "****************\n";
             std::cout << "setCodingKeyNumbers OK\n";
-            std::cout << "****************\n";
             std::cout << "convertKeyToNumbers OK\n";
-            std::cout << "****************\n";
         }
         else
         {
@@ -390,9 +367,7 @@ void SolitaireTest::test_encryptMessage()
     std::string encryptedMessage = m_cad.encryptMessage(message);  
     if(encryptedMessage.compare("KAKXFJORRXAFPEF") == 0)
     {
-        std::cout << "****************\n";
         std::cout << "encryptMessage OK\n";
-        std::cout << "****************\n";
     }
     else
     {
@@ -407,11 +382,8 @@ void SolitaireTest::test_decryptMessage()
     std::string decryptedMessage = m_cad.decryptMessage(cryptedMessage);  
     if(decryptedMessage.compare("Un message.") == 0)
     {
-        std::cout << "****************\n";
         std::cout << "decryptMessage OK\n";
-        std::cout << "****************\n";
         std::cout << "convertKeyToString OK\n";
-        std::cout << "****************\n";
     }
     else
     {
@@ -426,9 +398,7 @@ void SolitaireTest::test_replaceStopByDots()
     message = m_cad.replaceStopByDots(message);
     if(message.compare("un message.") == 0)
     {
-        std::cout << "****************\n";
         std::cout << "replaceStopByDots OK\n";
-        std::cout << "****************\n";
     }
     else
     {
@@ -436,10 +406,3 @@ void SolitaireTest::test_replaceStopByDots()
         exit(1);
     }
 }
-
-
-
-
-
-
-

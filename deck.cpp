@@ -1,5 +1,7 @@
 #include "deck.hpp"
 
+bool Deck::displayInfos = false;
+
 Deck::Deck(): m_cardsDeck(new std::list<Card>())
 {
     this->generateDeck();
@@ -103,6 +105,8 @@ void Deck::shuffleDeck(const std::string& value)
     //Par convention, les deux jokers ont le même numéro 53, donc on modifie celui du joker rouge (par défaut à 54 pour le mélange des cartes du deck)
     std::list<Card>::iterator redJoker = this->findCardById(54);
     (*redJoker).setId(53);
+    if(Deck::displayInfos)
+        this->displayDetailedDeck();
 }
 
 void Deck::displayDeck()
@@ -125,6 +129,15 @@ void Deck::displayDetailedDeck()
     for(std::list<Card>::iterator card = this->m_cardsDeck->begin(); card != this->m_cardsDeck->end(); ++card)
     {
         std::cout << "numero:" << card->getId() << " -> carte:" << card->getName() << " || ";
+    }
+    std::cout << std::endl;
+}
+
+void Deck::displayDeckWithNumber()
+{
+    for(std::list<Card>::iterator card = this->m_cardsDeck->begin(); card != this->m_cardsDeck->end(); ++card)
+    {
+        std::cout << (*card).getId() << " ";
     }
     std::cout << std::endl;
 }
@@ -182,17 +195,22 @@ std::string Deck::createKeyStream(int size)
             this->thirdStep();
             this->fourthStep();
             //Cinquième étape -> lecture d'une lettre pseudo-aléatoire
-            std::cout << "-----------------------------------------------------------------------\n";
-            std::cout << "=== Cinquieme etape -> lecture d'une lettre pseudo-aleatoire ===" << std::endl;
+            if(Deck::displayInfos)
+            {
+                std::cout << "-----------------------------------------------------------------------\n";
+                std::cout << "=== Cinquieme etape -> lecture d'une lettre pseudo-aleatoire ===" << std::endl;
+            }
             //On récupère le numéro de la première carte du deck
             int n = this->m_cardsDeck->front().getId();
-            std::cout << "numero de la premiere carte du deck: " << n << std::endl;
+            if(Deck::displayInfos)
+                std::cout << "numero de la premiere carte du deck: " << n << std::endl;
             //On crée un itérateur que l'on fait pointer sur la n+1-ième carte du deck
             std::list<Card>::iterator it = this->m_cardsDeck->begin();
             std::advance(it, n);
             //On récupère le numéro de la n+1-ième carte du deck
             int m = (*it).getId();
-            std::cout << "numero de la " << n+1 << "-ieme carte du deck: " << m << std::endl;
+            if(Deck::displayInfos)
+                std::cout << "numero de la " << n+1 << "-ieme carte du deck: " << m << std::endl;
             //Si c'est un joker (numéro de carte = 53), on recommence une opération complète de mélange (on repart à la première étape)
             if(m == 53)
                 isAJoker = true;
@@ -202,7 +220,8 @@ std::string Deck::createKeyStream(int size)
                 if(m > 26)
                     m -= 26;
                 //et on l'ajoute à la liste de flux de clés
-                std::cout << "Ajout de la cle de flux " << m << "." << std::endl;
+                if(Deck::displayInfos)
+                    std::cout << "Ajout de la cle de flux " << m << "." << std::endl;
                 keyStream += alphabet[m-1];
             }
 
@@ -217,10 +236,12 @@ std::string Deck::createKeyStream(int size)
 
 void Deck::firstStep()
 {
-    std::cout << "-----------------------------------------------------------------------\n";
-    std::cout << "=== Premiere etape -> On fait reculer le joker noir d'une place ===" << std::endl;
+    if(Deck::displayInfos)
+    {
+        std::cout << "-----------------------------------------------------------------------\n";
+        std::cout << "=== Premiere etape -> On fait reculer le joker noir d'une place ===" << std::endl;
+    }
     
-
     //On récupère la position du joker noir
     std::list<Card>::iterator blackJokerPos = this->findCardByName("BlackJoker");
     //On récupère la dernière carte du deck
@@ -251,17 +272,22 @@ void Deck::firstStep()
         this->m_cardsDeck->insert(pos, tempJoker);
     }
 
-    std::cout << "=========== Deck apres la premiere etape ===========\n";
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
-    this->displayDeck();
+    if(Deck::displayInfos)
+    {
+        std::cout << "=========== Deck apres la premiere etape ===========\n";
+        std::cout << "-----------------------------------------------------------------------" << std::endl;
+        this->displayDeck();
+    }
 }
 
 void Deck::secondStep()
 {
-    std::cout << "-----------------------------------------------------------------------\n";
-    std::cout << "=== Seconde etape -> On fait reculer le joker rouge de deux places ===" << std::endl;
+    if(Deck::displayInfos)
+    {
+        std::cout << "-----------------------------------------------------------------------\n";
+        std::cout << "=== Seconde etape -> On fait reculer le joker rouge de deux places ===" << std::endl;
+    }
     
-
     //On récupère la position du joker rouge
     std::list<Card>::iterator redJokerPos = this->findCardByName("RedJoker");
     //On récupère la dernière carte du deck
@@ -305,15 +331,21 @@ void Deck::secondStep()
         this->m_cardsDeck->insert(pos, tempJoker);
     }
 
-    std::cout << "=========== Deck apres la seconde etape ===========\n";
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
-    this->displayDeck();
+    if(Deck::displayInfos)
+    {
+        std::cout << "=========== Deck apres la seconde etape ===========\n";
+        std::cout << "-----------------------------------------------------------------------" << std::endl;
+        this->displayDeck();
+    }
 }
 
 void Deck::thirdStep()
 {
-    std::cout << "-----------------------------------------------------------------------\n";
-    std::cout << "=== Troisieme etape -> On fait une double coupe par rapport aux jokers ===" << std::endl;
+    if(Deck::displayInfos)
+    {
+        std::cout << "-----------------------------------------------------------------------\n";
+        std::cout << "=== Troisieme etape -> On fait une double coupe par rapport aux jokers ===" << std::endl;
+    }
 
     //On récupère la position des deux jokers
     std::list<Card>::iterator blackJokerPos = this->findCardByName("BlackJoker");
@@ -322,7 +354,8 @@ void Deck::thirdStep()
     //On calcule la distance relative entre les deux jokers pour savoir où sont placer les deux deux jokers
     //l'un par rapport à l'autre et donc savoir comment couper dans le paquet de cartes
     int distance = std::distance(this->m_cardsDeck->begin(), blackJokerPos) - std::distance(this->m_cardsDeck->begin(), redJokerPos);
-    std::cout << "distance entre les deux jokers: " << distance << std::endl;
+    if(Deck::displayInfos)
+        std::cout << "distance entre les deux jokers: " << distance << std::endl;
     //Si la distance est positive, le joker rouge est situé avant le joker noir
     if(distance > 0)
     {
@@ -332,8 +365,9 @@ void Deck::thirdStep()
         secondFragment.splice(secondFragment.begin(), *this->m_cardsDeck, blackJokerPos, this->m_cardsDeck->end());
         //On récupère le premier fragment situé entre le début du deck et le joker rouge non compris
         std::list<Card> firstFragment;
-        firstFragment.splice(firstFragment.begin(), *this->m_cardsDeck, this->m_cardsDeck->begin(), redJokerPos);    
-        this->displayDeck();
+        firstFragment.splice(firstFragment.begin(), *this->m_cardsDeck, this->m_cardsDeck->begin(), redJokerPos);
+        if(Deck::displayInfos)    
+            this->displayDeck();
         //Puis on insère le second fragment à la place du premier et le premier à la place du second dans le deck
         this->m_cardsDeck->insert(this->m_cardsDeck->begin(), secondFragment.begin(), secondFragment.end());
         this->m_cardsDeck->insert(this->m_cardsDeck->end(), firstFragment.begin(), firstFragment.end());
@@ -347,26 +381,34 @@ void Deck::thirdStep()
         secondFragment.splice(secondFragment.begin(), *this->m_cardsDeck, redJokerPos, this->m_cardsDeck->end());
         //On récupère le premier fragment situé entre le début du deck et le joker noir non compris
         std::list<Card> firstFragment;
-        firstFragment.splice(firstFragment.begin(), *this->m_cardsDeck, this->m_cardsDeck->begin(), blackJokerPos);    
-        this->displayDeck();
+        firstFragment.splice(firstFragment.begin(), *this->m_cardsDeck, this->m_cardsDeck->begin(), blackJokerPos);
+        if(Deck::displayInfos)    
+            this->displayDeck();
         //Puis on insère le second fragment à la place du premier et le premier à la place du second dans le deck
         this->m_cardsDeck->insert(this->m_cardsDeck->begin(), secondFragment.begin(), secondFragment.end());
         this->m_cardsDeck->insert(this->m_cardsDeck->end(), firstFragment.begin(), firstFragment.end());
     }
 
-    std::cout << "=========== Deck apres la troisieme etape ===========\n";
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
-    this->displayDeck();
+    if(Deck::displayInfos)
+    {
+        std::cout << "=========== Deck apres la troisieme etape ===========\n";
+        std::cout << "-----------------------------------------------------------------------" << std::endl;
+        this->displayDeck();
+    }
 }
 
 void Deck::fourthStep()
 {
-    std::cout << "-----------------------------------------------------------------------\n";
-    std::cout << "=== Quatrieme etape -> Coupe simple determinee par la derniere carte ===" << std::endl;
+    if(Deck::displayInfos)
+    {
+        std::cout << "-----------------------------------------------------------------------\n";
+        std::cout << "=== Quatrieme etape -> Coupe simple determinee par la derniere carte ===" << std::endl;
+    }
 
     //On récupère le numéro de la dernière carte
     int n = this->m_cardsDeck->back().getId();
-    std::cout << "numero de la derniere carte: " << n << std::endl;
+    if(Deck::displayInfos)
+        std::cout << "numero de la derniere carte: " << n << std::endl;
     //On regarde si la dernière carte n'est pas un joker (numéro de carte: 53).
     //Si c'est le cas, la coupe n'est pas nécessaire car cela ne change pas la configuration du deck
     if(n != 53)
@@ -381,9 +423,12 @@ void Deck::fourthStep()
         this->m_cardsDeck->insert(std::prev(this->m_cardsDeck->end()), fragment.begin(), fragment.end());
     }
 
-    std::cout << "=========== Deck apres la quatrieme etape ===========\n";
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
-    this->displayDeck();
+    if(Deck::displayInfos)
+    {
+        std::cout << "=========== Deck apres la quatrieme etape ===========\n";
+        std::cout << "-----------------------------------------------------------------------" << std::endl;
+        this->displayDeck();
+    }
 }
 
 bool operator==(Deck& deck1, Deck& deck2)

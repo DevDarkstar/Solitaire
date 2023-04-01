@@ -1,5 +1,8 @@
 #include "encryptanddecrypt.hpp"
 
+//Permet d'afficher des informations détaillées sur le déroulement du programme
+bool EncryptAndDecrypt::displayInfos = false;
+
 EncryptAndDecrypt::EncryptAndDecrypt(): m_codingKeyString(""), m_codingKeyNumbers(new std::list<int>())
 {
 
@@ -7,12 +10,15 @@ EncryptAndDecrypt::EncryptAndDecrypt(): m_codingKeyString(""), m_codingKeyNumber
 
 EncryptAndDecrypt::EncryptAndDecrypt(const std::string& key): m_codingKeyString(key), m_codingKeyNumbers(this->convertKeyToNumbers(key))
 {
-    std::cout << "La cle vaut " << this->m_codingKeyString << " et sa representation sous forme numerique est ";
-    for(std::list<int>::iterator it = this->m_codingKeyNumbers->begin(); it != this->m_codingKeyNumbers->end(); ++it)
+    if(EncryptAndDecrypt::displayInfos)
     {
-        std::cout << *it << " ";
+        std::cout << "La cle vaut " << this->m_codingKeyString << " et sa representation sous forme numerique est ";
+        for(std::list<int>::iterator it = this->m_codingKeyNumbers->begin(); it != this->m_codingKeyNumbers->end(); ++it)
+        {
+            std::cout << *it << " ";
+        }
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
 }
 
 EncryptAndDecrypt::~EncryptAndDecrypt()
@@ -155,11 +161,14 @@ std::string EncryptAndDecrypt::encryptMessage(std::string& message)
         return std::toupper(c);
     });
 
-    std::cout << "-----------------------------------------------------------------------\n";
-    std::cout << "========== Cryptage du message: " << message << " ==========\n";
-    std::cout << "-----------------------------------------------------------------------\n";
-    std::cout << "========== Cle utilisee pour le cryptage: " << this->getCodingKey() << " ==========\n";
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
+    if(EncryptAndDecrypt::displayInfos)
+    {
+        std::cout << "-----------------------------------------------------------------------\n";
+        std::cout << "========== Cryptage du message: " << message << " ==========\n";
+        std::cout << "-----------------------------------------------------------------------\n";
+        std::cout << "========== Cle utilisee pour le cryptage: " << this->getCodingKey() << " ==========\n";
+        std::cout << "-----------------------------------------------------------------------" << std::endl;
+    }
 
     //On transforme le message à crypter d'une chaine de caractères à une liste de nombres
     std::list<int> *messageToNumbers = this->convertKeyToNumbers(message);
@@ -181,12 +190,15 @@ std::string EncryptAndDecrypt::encryptMessage(std::string& message)
     messageToNumbers->clear();
     delete messageToNumbers;
 
-    std::cout << "========== Message crypte sous forme numerique: ";
-    for(std::list<int>::iterator it = encryptedMessage->begin(); it != encryptedMessage->end(); ++it)
+    if(EncryptAndDecrypt::displayInfos)
     {
-        std::cout << *it << " ";
+        std::cout << "========== Message crypte sous forme numerique: ";
+        for(std::list<int>::iterator it = encryptedMessage->begin(); it != encryptedMessage->end(); ++it)
+        {
+            std::cout << *it << " ";
+        }
+        std::cout << "\n-----------------------------------------------------------------------" << std::endl;
     }
-    std::cout << "\n-----------------------------------------------------------------------" << std::endl;
 
     //Enfin, on transforme le message crypté en chaine de caractères
     std::string finalMessage = this->convertKeyToString(encryptedMessage);
@@ -195,19 +207,25 @@ std::string EncryptAndDecrypt::encryptMessage(std::string& message)
     encryptedMessage->clear();
     delete encryptedMessage;
 
-    std::cout << "========== Le message crypte est: " << finalMessage << " ==========\n";
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
+    if(EncryptAndDecrypt::displayInfos)
+    {
+        std::cout << "========== Le message crypte est: " << finalMessage << " ==========\n";
+        std::cout << "-----------------------------------------------------------------------" << std::endl;
+    }
 
     return finalMessage;
 }
 
 std::string EncryptAndDecrypt::decryptMessage(const std::string& message)
 {
-    std::cout << "-----------------------------------------------------------------------\n";
-    std::cout << "========== Decryptage du message: " << message << " ==========\n";
-    std::cout << "-----------------------------------------------------------------------\n";
-    std::cout << "========== Cle utilisee pour le decryptage: " << this->getCodingKey() << " ==========\n";
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
+    if(EncryptAndDecrypt::displayInfos)
+    {
+        std::cout << "-----------------------------------------------------------------------\n";
+        std::cout << "========== Decryptage du message: " << message << " ==========\n";
+        std::cout << "-----------------------------------------------------------------------\n";
+        std::cout << "========== Cle utilisee pour le decryptage: " << this->getCodingKey() << " ==========\n";
+        std::cout << "-----------------------------------------------------------------------" << std::endl;
+    }
 
     //On transforme le message à décrypter d'une chaine de caractères à une liste de nombres
     std::list<int> *messageToNumbers = this->convertKeyToNumbers(message);
@@ -229,12 +247,15 @@ std::string EncryptAndDecrypt::decryptMessage(const std::string& message)
     messageToNumbers->clear();
     delete messageToNumbers;
 
-    std::cout << "========== Message decrypte sous forme numerique: ";
-    for(std::list<int>::iterator it = decryptedMessage->begin(); it != decryptedMessage->end(); ++it)
+    if(EncryptAndDecrypt::displayInfos)
     {
-        std::cout << *it << " ";
+        std::cout << "========== Message decrypte sous forme numerique: ";
+        for(std::list<int>::iterator it = decryptedMessage->begin(); it != decryptedMessage->end(); ++it)
+        {
+            std::cout << *it << " ";
+        }
+        std::cout << "\n-----------------------------------------------------------------------" << std::endl;
     }
-    std::cout << "\n-----------------------------------------------------------------------" << std::endl;
 
     //Enfin, on transforme le message décrypté en chaine de caractères
     std::string finalMessage = this->convertKeyToString(decryptedMessage);
@@ -245,9 +266,11 @@ std::string EncryptAndDecrypt::decryptMessage(const std::string& message)
 
     finalMessage = this->replaceStopByDots(finalMessage);
 
-    std::cout << "========== Le message decrypte est: " << finalMessage << " ==========\n";
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
+    if(EncryptAndDecrypt::displayInfos)
+    {
+        std::cout << "========== Le message decrypte est: " << finalMessage << " ==========\n";
+        std::cout << "-----------------------------------------------------------------------" << std::endl;
+    }
 
     return finalMessage;
 }
-

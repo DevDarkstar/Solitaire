@@ -15,6 +15,7 @@ class Deck{
 private:
 std::list<Card> *m_cardsDeck;
 public:
+    static bool displayInfos;
     Deck();
     Deck(std::list<Card> *cards);
     ~Deck();
@@ -24,6 +25,7 @@ public:
     void shuffleDeck(const std::string& value);
     void displayDeck();
     void displayDetailedDeck();
+    void displayDeckWithNumber();
     std::list<Card>::iterator findCardById(int id);
     std::list<Card>::iterator findCardByName(const std::string& name);
     std::string createKeyStream(int size);
