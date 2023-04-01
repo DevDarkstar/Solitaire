@@ -45,7 +45,8 @@ int main()
                     std::cin.clear();
                     std::cin.sync();
                 #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-                    std::cout << "unix\n";
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 #endif              
                 std::string message;
                 std::cout << "Indiquer le message que vous souhaitez crypter: ";
@@ -54,8 +55,6 @@ int main()
                 #if defined(_WIN32)
                     std::cin.clear();
                     std::cin.sync();
-                #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-                    std::cout << "unix\n";
                 #endif  
 
                 std::string fileName;
@@ -67,8 +66,6 @@ int main()
                     #if defined(_WIN32)
                         std::cin.clear();
                         std::cin.sync();
-                    #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-                        std::cout << "unix\n";
                     #endif
                     std::cout << "Voulez-vous afficher les informations detaillees du programme?\n";
                     std::cout << "'O' pour oui - 'N' pour non: ";
@@ -93,7 +90,12 @@ int main()
                 if(file)
                 {
                     //On transforme le message (suppression des accents, des caractères de fin de phrase,...) afin de faciliter son cryptage
-                    std::string correctedMessage = EncryptAndDecrypt::correctMessage(message); 
+                    std::string correctedMessage = "";
+                    #if defined(_WIN32)
+                        correctedMessage = EncryptAndDecrypt::correctMessage(message);
+                    #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+                        correctedMessage = EncryptAndDecrypt::correctMessageUnicode(message);
+                    #endif 
                     //On génère une clé de cryptage de la même taille que le message à crypter
                     std::string keyStream = d_creator.createKeyStream(correctedMessage.size());
                     EncryptAndDecrypt cad(keyStream);
@@ -117,7 +119,8 @@ int main()
                     std::cin.clear();
                     std::cin.sync();
                 #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-                    std::cout << "unix\n";
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 #endif  
                 std::string fileName;
                 std::cout << "Indiquez le nom de fichier contenant le nom de fichier que vous souhaitez decrypter: ";
@@ -128,8 +131,6 @@ int main()
                     #if defined(_WIN32)
                         std::cin.clear();
                         std::cin.sync();
-                    #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-                        std::cout << "unix\n";
                     #endif
                     std::cout << "Voulez-vous afficher les informations detaillees du programme?\n";
                     std::cout << "'O' pour oui - 'N' pour non: ";
