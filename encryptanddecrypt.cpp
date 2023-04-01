@@ -119,28 +119,28 @@ std::string EncryptAndDecrypt::correctMessage(std::string& message)
 {
     std::string tempMessage;
     //Et on actualise le message en remplaçant les caractères spéciaux par leur version classique
-    //pour les a
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\x85|\x83|\x84"), "a");
+    //pour les a accentués
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\x85|\x83|\x84|\x8E"), "a");
     message = "";
-    //pour les e
-    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x82|\x8A|\x88|\x89"), "e");
+    //pour les e accentués
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x82|\x8A|\x88|\x89|\x90"), "e");
     tempMessage = "";
-    //pour les i
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\x8B|\x8C"), "i");
+    //pour les i accentués
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\x8B|\x8C|\x8D"), "i");
     message = "";
-    //pour les o
-    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x91|\x92"), "o");
+    //pour les o accentués
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x93|\x94|\x95"), "o");
     tempMessage = "";
-    //pour les u
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\x95|\x94|\x81"), "u");
+    //pour les u accentués
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\x96|\x97|\x81"), "u");
     message = "";
-    //pour le c
-    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x87"), "c");
+    //pour le c cédille
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x87|\x80"), "c");
     tempMessage = "";
     //les caractères de milieu de phrase
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex(",|:"), "");
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex(",|:|\""), "");
     message = "";
-    //pour le e commercial
+    //pour le e commercial (&)
     std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x26"), "et");
     tempMessage = "";
     //pour les caractères de fin de phrase
@@ -148,6 +148,37 @@ std::string EncryptAndDecrypt::correctMessage(std::string& message)
     message = "";
     //et enfin pour les caractères de liaison
     std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\\-|'|_"), " ");
+    tempMessage = "";
+
+    //On fait de même pour les 10 premiers chiffres
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("0"), "zero");
+    message = "";
+
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("1"), "un");
+    tempMessage = "";
+
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("2"), "deux");
+    message = "";
+
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("3"), "trois");
+    tempMessage = "";
+
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("4"), "quatre");
+    message = "";
+
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("5"), "cinq");
+    tempMessage = "";
+
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("6"), "six");
+    message = "";
+
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("7"), "sept");
+    tempMessage = "";
+
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("8"), "huit");
+    message = "";
+
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("9"), "neuf");
     tempMessage = "";
 
     return message;
