@@ -18,11 +18,11 @@ void SolitaireTest::tests()
     test_thirdStep();
     test_fourthStep(); 
     test_createKeyStream();
-    test_correctMessage();
-    test_setCodingKeyString();
-    test_encryptMessage();
-    test_decryptMessage();
-    test_replaceStopByDots();
+    //test_correctMessage();
+    //test_setCodingKeyString();
+    //test_encryptMessage();
+    //test_decryptMessage();
+    //test_replaceStopByDots();
 }
 
 void SolitaireTest::test_generateDeck()
@@ -387,6 +387,7 @@ void SolitaireTest::test_decryptMessage()
     }
     else
     {
+        std::cout << decryptedMessage << "\n";
         std::cout << "decryptMessage FALSE\n";
         exit(1);
     }

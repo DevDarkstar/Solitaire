@@ -61,10 +61,7 @@ std::string EncryptAndDecrypt::convertKeyToString(std::list<int> *key)
     //On convertit la liste de nombres en chaine de caractères
     for(std::list<int>::iterator it = key->begin(); it != key->end(); ++it)
     {
-        if(*it == 0)
-            convertedKey += ' ';
-        else
-            convertedKey += alphabet[*it - 1];
+        convertedKey += alphabet[*it - 1];
     }
 
     return convertedKey;
@@ -79,10 +76,7 @@ std::list<int> *EncryptAndDecrypt::convertKeyToNumbers(const std::string& key)
     //On convertit la chaine de caractères en liste de nombres
     for(int i = 0; i < key.size(); i++)
     {
-        if(key[i] == ' ')
-            convertedKey->push_back(0);
-        else
-            convertedKey->push_back(std::distance(alphabet.begin(), std::find(alphabet.begin(), alphabet.end(), key[i])) + 1);
+        convertedKey->push_back(std::distance(alphabet.begin(), std::find(alphabet.begin(), alphabet.end(), key[i])) + 1);
     }
 
     return convertedKey;
@@ -99,11 +93,22 @@ std::string& EncryptAndDecrypt::replaceStopByDots(std::string& message)
     });
 
     size_t found = 0;
+    //On fait pareil pour les espaces
     do{
-        found = message.find(" stop", found);
+        found = message.find("sz", found);
         if(found != std::string::npos)
         {
-            message.replace(found, 5, ".");
+            message.replace(found, 2, " ");
+            found++;
+        }
+    }while(found != std::string::npos);
+
+    found = 0;
+    do{
+        found = message.find("stop", found);
+        if(found != std::string::npos)
+        {
+            message.replace(found, 4, ".");
             found += 2;
             //On récupère le caractère suivant
             char c = message[found];
@@ -144,10 +149,10 @@ std::string EncryptAndDecrypt::correctMessage(std::string& message)
     std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x26"), "et");
     tempMessage = "";
     //pour les caractères de fin de phrase
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\\.|!|;|\\?"), " stop");
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\\.|!|;|\\?"), "stop");
     message = "";
     //et enfin pour les caractères de liaison
-    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\\-|'|_"), " ");
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\\-|'|_"), "sz");
     tempMessage = "";
 
     //On fait de même pour les 10 premiers chiffres
@@ -181,7 +186,11 @@ std::string EncryptAndDecrypt::correctMessage(std::string& message)
     std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("9"), "neuf");
     tempMessage = "";
 
-    return message;
+    //Pour les espaces
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex(" "), "sz");
+    message = "";
+
+    return tempMessage;
 }
 
 std::string EncryptAndDecrypt::correctMessageUnicode(std::string& message)
@@ -213,10 +222,10 @@ std::string EncryptAndDecrypt::correctMessageUnicode(std::string& message)
     std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x26"), "et");
     tempMessage = "";
     //pour les caractères de fin de phrase
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\\.|!|;|\\?"), " stop");
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\\.|!|;|\\?"), "stop");
     message = "";
     //et enfin pour les caractères de liaison
-    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\\-|'|_"), " ");
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\\-|'|_"), "sz");
     tempMessage = "";
 
     //On fait de même pour les 10 premiers chiffres
@@ -250,7 +259,11 @@ std::string EncryptAndDecrypt::correctMessageUnicode(std::string& message)
     std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("9"), "neuf");
     tempMessage = "";
 
-    return message;
+    //Pour les espaces
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex(" "), "sz");
+    message = "";
+
+    return tempMessage;
 }
 
 std::string EncryptAndDecrypt::encryptMessage(std::string& message)
@@ -336,8 +349,8 @@ std::string EncryptAndDecrypt::decryptMessage(const std::string& message)
     for(std::list<int>::iterator it1 = this->m_codingKeyNumbers->begin(), it2 = messageToNumbers->begin(); it1 != this->m_codingKeyNumbers->end() && it2 != messageToNumbers->end(); ++it1, ++it2)
     {
         int value = *it2 - *it1;
-        //Si la valeur obtenue est inférieure à 0, on y ajoute 26
-        if(value < 0)
+        //Si la valeur obtenue est inférieure à 1, on y ajoute 26
+        if(value < 1)
             value += 26;
         //Puis on ajoute cette valeur dans la liste de nombres de message décrypté
         decryptedMessage->push_back(value);
