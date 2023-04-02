@@ -24,7 +24,7 @@ class EncryptAndDecrypt
     std::list<int>* getCodingKeyNumbers() const;
     std::string convertKeyToString(std::list<int> *key);
     std::list<int>* convertKeyToNumbers(const std::string& key);
-    std::string& replaceStopByDots(std::string& message);
+    std::string& addDotsAndSpaces(std::string& message);
     static std::string correctMessage(std::string& message);
     static std::string correctMessageUnicode(std::string& message);
     std::string encryptMessage(std::string& message);

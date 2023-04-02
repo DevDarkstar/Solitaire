@@ -18,11 +18,11 @@ void SolitaireTest::tests()
     test_thirdStep();
     test_fourthStep(); 
     test_createKeyStream();
-    //test_correctMessage();
-    //test_setCodingKeyString();
-    //test_encryptMessage();
-    //test_decryptMessage();
-    //test_replaceStopByDots();
+    test_correctMessage();
+    test_setCodingKeyString();
+    test_encryptMessage();
+    test_decryptMessage();
+    test_addDotsAndSpaces();
 }
 
 void SolitaireTest::test_generateDeck()
@@ -303,7 +303,7 @@ void SolitaireTest::test_correctMessage()
     std::string message = "Un message.";
     std::string correctedMessage = EncryptAndDecrypt::correctMessage(message);
 
-    if(correctedMessage.compare("Un message stop") == 0)
+    if(correctedMessage.compare("Unszmessagestop") == 0)
     {
         std::cout << "correctMessage OK\n";
     }
@@ -317,7 +317,7 @@ void SolitaireTest::test_correctMessage()
 void SolitaireTest::test_setCodingKeyString()
 {
     //On crée un message pour tester les fonctions de la classe EncryptAndDecrypt
-    std::string message = "Un message stop";
+    std::string message = "Unszmessagestop";
     std::string key = m_creator.createKeyStream(message.size());
     m_cad.setCodingKeyString(key);
     std::string keyString = m_cad.getCodingKey();
@@ -363,9 +363,9 @@ void SolitaireTest::test_setCodingKeyString()
 
 void SolitaireTest::test_encryptMessage()
 {
-    std::string message = "Un message stop";
+    std::string message = "Unszmessagestop";
     std::string encryptedMessage = m_cad.encryptMessage(message);  
-    if(encryptedMessage.compare("KAKXFJORRXAFPEF") == 0)
+    if(encryptedMessage.compare("KADKNVOJLZFFPEF") == 0)
     {
         std::cout << "encryptMessage OK\n";
     }
@@ -378,7 +378,7 @@ void SolitaireTest::test_encryptMessage()
 
 void SolitaireTest::test_decryptMessage()
 {
-    std::string cryptedMessage = "KAKXFJORRXAFPEF";
+    std::string cryptedMessage = "KADKNVOJLZFFPEF";
     std::string decryptedMessage = m_cad.decryptMessage(cryptedMessage);  
     if(decryptedMessage.compare("Un message.") == 0)
     {
@@ -393,10 +393,10 @@ void SolitaireTest::test_decryptMessage()
     }
 }
 
-void SolitaireTest::test_replaceStopByDots()
+void SolitaireTest::test_addDotsAndSpaces()
 {
-    std::string message = "un MeSsaGe stop";
-    message = m_cad.replaceStopByDots(message);
+    std::string message = "unszMeSsaGestop";
+    message = m_cad.addDotsAndSpaces(message);
     if(message.compare("un message.") == 0)
     {
         std::cout << "replaceStopByDots OK\n";

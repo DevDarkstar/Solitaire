@@ -30,7 +30,7 @@ class SolitaireTest
     void test_setCodingKeyString();
     void test_encryptMessage();
     void test_decryptMessage();
-    void test_replaceStopByDots();
+    void test_addDotsAndSpaces();
 };
 
 #endif

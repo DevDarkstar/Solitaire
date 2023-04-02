@@ -12,7 +12,7 @@ int main()
     delete test;
     //Création du deck du créateur des messages cryptés
     Deck d_creator;
-    d_creator.shuffleDeck("1");
+    d_creator.shuffleDeck("random");
 
     //Création ensuite du deck du correspondant contenant le même deck que le créateur des messages
     Deck d_correspondant(d_creator.getDeck());

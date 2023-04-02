@@ -82,7 +82,7 @@ std::list<int> *EncryptAndDecrypt::convertKeyToNumbers(const std::string& key)
     return convertedKey;
 }
 
-std::string& EncryptAndDecrypt::replaceStopByDots(std::string& message)
+std::string& EncryptAndDecrypt::addDotsAndSpaces(std::string& message)
 {
     //On passe l'intégralité du message en minuscules sauf la première lettre
     std::string::iterator it = message.begin();
@@ -377,7 +377,7 @@ std::string EncryptAndDecrypt::decryptMessage(const std::string& message)
     decryptedMessage->clear();
     delete decryptedMessage;
 
-    finalMessage = this->replaceStopByDots(finalMessage);
+    finalMessage = this->addDotsAndSpaces(finalMessage);
 
     if(EncryptAndDecrypt::displayInfos)
     {
