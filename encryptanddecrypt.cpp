@@ -143,7 +143,7 @@ std::string EncryptAndDecrypt::correctMessage(std::string& message)
     std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x87|\x80"), "c");
     tempMessage = "";
     //les caractères de milieu de phrase
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex(",|:|\\(|\\)|\\[|\\]|\""), "");
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex(",|:|\\(|\\)|\\[|\\]|\"|/|\\\\"), "");
     message = "";
     //pour le e commercial (&)
     std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x26"), "et");
@@ -212,7 +212,7 @@ std::string EncryptAndDecrypt::correctMessageUnicode(std::string& message)
     std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\xc3\xa7|\xc3\x87"), "c");
     tempMessage = "";
     //les caractères de milieu de phrase
-    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex(",|:|\\(|\\)|\\[|\\]|\""), "");
+    std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex(",|:|\\(|\\)|\\[|\\]|\"|/|\\\\"), "");
     message = "";
     //pour le e commercial (&)
     std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\x26"), "et");
