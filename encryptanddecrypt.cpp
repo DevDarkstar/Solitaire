@@ -221,7 +221,7 @@ std::string EncryptAndDecrypt::correctMessageUnicode(std::string& message)
     std::regex_replace(std::back_inserter(tempMessage) , message.begin(), message.end(), std::regex("\\.|!|;|\\?"), "stop");
     message = "";
     //et enfin pour les caractères de liaison
-    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\\-|'|_| "), "sz");
+    std::regex_replace(std::back_inserter(message) , tempMessage.begin(), tempMessage.end(), std::regex("\\-|'|’|_| "), "sz");
     tempMessage = "";
 
     //On fait de même pour les 10 premiers chiffres
